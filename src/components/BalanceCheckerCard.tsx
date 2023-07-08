@@ -3,7 +3,6 @@ import { Box, Paper, TextField, Typography } from '@mui/material';
 import Image from 'next/image'
 import DwellingIconFilled from '../../public/DwellingIcon-Filled.jpg'
 
-
 const BalanceCheckerCard = () => {
     return (
         <Box
@@ -60,7 +59,6 @@ const BalanceCheckerCard = () => {
             fontWeight: 400,
             fontSize: '14px',
             lineHeight: '21px',
-            // width: '242.29px',
             paddingTop: '19px',
             paddingLeft: '20px'
         }}>
@@ -68,6 +66,8 @@ const BalanceCheckerCard = () => {
       </Typography>
         </Paper>
         <TextField 
+        defaultValue="xxxx xxxx xxxx xxxx"
+        placeholder="xxxx xxxx xxxx xxxx"
         sx={{
             backgroundColor: "#FFFFFF",
             borderTopStyle: 'solid',
@@ -76,6 +76,9 @@ const BalanceCheckerCard = () => {
             borderTopRightRadius: 0,
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
+            "& .Mui-focused": {
+              opacity: '100% !important'
+            },
             '& .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root': {
                 borderRadius: 0,
                 borderBottomLeftRadius: '10px',
@@ -84,7 +87,10 @@ const BalanceCheckerCard = () => {
                 fontSize: '14px',
                 lineHeight: '23.5px',
                 fontFamily: 'var(--font-roboto-mono)',
-            }
+                color: '#292929',
+                opacity: '50%',
+            },
+
         }}
         />
         </Box>

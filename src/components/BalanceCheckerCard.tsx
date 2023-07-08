@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import Image from 'next/image'
 import DwellingIconFilled from '../../public/DwellingIcon-Filled.jpg'
 
 const BalanceCheckerCard = () => {
+  const [cardValue, setCardValue] = useState('')
+  const handleCardValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleNumberDisplay(event.target.value)
+  }
+
+  const handleNumberDisplay = (input: any) => {
+    const re = /[a-zA-Z&@*~$()[;\)\:\]\?{\}\-_+=`\^\|\\\\/\"',.!#%<>](.*)/g;
+    if (re.test(input)) {
+      input = input.replace(re, ''); // removes all the letters and special characters
+    }
+    let numbersWithoutSpaces = [...input.split(' ').join('')] // Remove old space
+
+    if (numbersWithoutSpaces.length > 16) {
+      //If entered value has a length greater than 16 then take only the first 16 digits
+      numbersWithoutSpaces = numbersWithoutSpaces.slice(0, 16);
+    }
+        const creditCard: any = [] // Create card as array
+        numbersWithoutSpaces.forEach((val, index) => {
+            if (index % 4 === 0 && index !== 0) creditCard.push(' ') // Add space
+            creditCard.push(val)
+        })
+        const finalCreditCard = creditCard.join('') // Transform card array to string
+        setCardValue(finalCreditCard);
+  }
+
+
+
     return (
         <Box
           sx={{
@@ -66,8 +93,10 @@ const BalanceCheckerCard = () => {
       </Typography>
         </Paper>
         <TextField 
-        defaultValue="xxxx xxxx xxxx xxxx"
+        type="text"
         placeholder="xxxx xxxx xxxx xxxx"
+        value={cardValue}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCardValueChange(event)}
         sx={{
             backgroundColor: "#FFFFFF",
             borderTopStyle: 'solid',
@@ -78,6 +107,14 @@ const BalanceCheckerCard = () => {
             borderBottomRightRadius: '10px',
             "& .Mui-focused": {
               opacity: '100% !important'
+            },
+            '& input[type=number]::-webkit-inner-spin-button': {
+              appearance: 'none',
+              margin: 0
+            },
+            '& input[type=number]::-webkit-outer-spin-button': { 
+              appearance: 'none', 
+              margin: 0
             },
             '& .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root': {
                 borderRadius: 0,

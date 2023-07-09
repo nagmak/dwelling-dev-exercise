@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Paper, TextField, Typography, Button, Avatar } from '@mui/material';
 import CreditCardList from "./CreditCardList";
-import { handleNumberDisplay, sortByBalanceDesc } from '@/utils/balanceCheckerUtils'
+import { handleNumberDisplay, sortByBalanceDesc, getBalance } from '@/utils/balanceCheckerUtils'
 
 interface CreditCard {
   cardValue: string;
@@ -23,28 +23,37 @@ const BalanceCheckerCard = () => {
       setCardValue(finalCreditCard);
     }
 
-    const checkCreditCardValidity = () => {
+    const checkCreditCardValidity = async() => {
       let cardValueWithoutSpaces = cardValue.replaceAll(' ', '');
       if (cardValueWithoutSpaces.length === 16) {
         console.log('card is valid!')
-        let endingValue = cardValueWithoutSpaces.substring(12, 16)
-        let fakeBalance = parseInt(cardValueWithoutSpaces.substring(14, 16))
+        const endingValue = cardValueWithoutSpaces.substring(12, 16)
+        const calculatedBalance = await getBalance(cardValueWithoutSpaces);
         let creditCard = {
           cardValue: cardValue,
-          balance: fakeBalance,
+          balance: calculatedBalance,
           endingValue: endingValue
         }
-        console.log(creditCard)
         addCreditCardToList(creditCard)
       }
     }
 
     const addCreditCardToList = (card: CreditCard) => {
-      const newList = creditCardList.concat(card);
-      let sortedList = sortByBalanceDesc(newList)
-      setCreditCardList(sortedList);
-      console.log(sortedList)
+      let newCardList: any = []
+      const found = creditCardList.some(creditCard => creditCard.cardValue === card.cardValue);
+      if (!found) {
+        newCardList = creditCardList.concat(card);
+        let sortedList = sortByBalanceDesc(newCardList)
+        setCreditCardList(sortedList);
+      } 
     }
+
+    const removeCreditCardFromList = (card: CreditCard) => {
+      const newCardList = creditCardList.filter((creditCard) => creditCard.cardValue !== card.cardValue);
+      let sortedList = sortByBalanceDesc(newCardList)
+      setCreditCardList(sortedList)
+    }
+
 
     return (
       <>
@@ -161,7 +170,7 @@ const BalanceCheckerCard = () => {
         >Check</Button>
         {creditCardList.map((card, index) => (
           card.cardValue && card.cardValue !== '' ? (
-            <CreditCardList key={`creditcard--${index}`} creditCard={card}/>
+            <CreditCardList key={`creditcard--${index}`} creditCard={card} onClickTrash={removeCreditCardFromList}/>
           ): null
         ))}
         

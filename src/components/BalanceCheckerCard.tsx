@@ -166,9 +166,9 @@ const BalanceCheckerCard = () => {
         { !isValid ? (
           <Typography sx={{
             fontFamily: 'var(--font-roboto-mono)',
-            fontWeight: 400,
-            fontSize: '12px',
-            lineHeight: '21px',
+            fontWeight: 700,
+            fontSize: '14px',
+            lineHeight: '18.46px',
             paddingTop: '19px',
             paddingLeft: '20px',
             color: '#FF4D00',

@@ -15,8 +15,9 @@ const BalanceCheckerCard = () => {
       balance: 0,
       endingValue: ''
     }
-    const [cardValue, setCardValue] = useState('')
-    const [creditCardList, setCreditCardList] = React.useState([initialState])
+    const [cardValue, setCardValue] = useState('');
+    const [isValid, setIsValid] = useState(false);
+    const [creditCardList, setCreditCardList] = React.useState([initialState]);
 
     const handleCardValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       let finalCreditCard = handleNumberDisplay(event.target.value)
@@ -26,15 +27,16 @@ const BalanceCheckerCard = () => {
     const checkCreditCardValidity = async() => {
       let cardValueWithoutSpaces = cardValue.replaceAll(' ', '');
       if (cardValueWithoutSpaces.length === 16) {
-        console.log('card is valid!')
         const endingValue = cardValueWithoutSpaces.substring(12, 16)
         const calculatedBalance = await getBalance(cardValueWithoutSpaces);
         let creditCard = {
           cardValue: cardValue,
           balance: calculatedBalance,
           endingValue: endingValue
-        }
+        } 
         addCreditCardToList(creditCard)
+      } else {
+        setIsValid(false)
       }
     }
 
@@ -42,6 +44,7 @@ const BalanceCheckerCard = () => {
       let newCardList: any = []
       const found = creditCardList.some(creditCard => creditCard.cardValue === card.cardValue);
       if (!found) {
+        setIsValid(true);
         newCardList = creditCardList.concat(card);
         let sortedList = sortByBalanceDesc(newCardList)
         setCreditCardList(sortedList);
@@ -59,10 +62,6 @@ const BalanceCheckerCard = () => {
       <>
         <Box
           sx={{
-            borderRadius: "10px",
-            border: 'solid',
-            borderWidth: '1px',
-            borderColor: "#000000",
             display: 'flex',
             flexDirection: 'column',
             flexWrap: 'wrap',
@@ -73,6 +72,9 @@ const BalanceCheckerCard = () => {
             backgroundColor: "#FDF4EC",
             height: 134.87,
             margin: 0,
+            border: 'solid',
+            borderTopWidth: '1px',
+            borderBottomWidth: 0,
             borderTopLeftRadius: '10px',
             borderTopRightRadius: '10px',
             borderBottomLeftRadius: 0,
@@ -115,20 +117,26 @@ const BalanceCheckerCard = () => {
       </Typography>
         </Paper>
         <TextField 
+        error={!isValid}
         type="text"
         placeholder="xxxx xxxx xxxx xxxx"
         value={cardValue}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleCardValueChange(event)}
         sx={{
             backgroundColor: "#FFFFFF",
-            borderTopStyle: 'solid',
-            borderTopWidth: '1px',
+            borderStyle: 'solid',
+            borderWidth: '1px',
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
+            borderColor: "#000000",
+            "& .Mui-error": {
+              color: '#FF4D00',
+              borderColor: "#FF4D00",
+            },
             "& .Mui-focused": {
-              opacity: '100% !important'
+              opacity: '100% !important',
             },
             '& input[type=number]::-webkit-inner-spin-button': {
               appearance: 'none',
@@ -149,10 +157,26 @@ const BalanceCheckerCard = () => {
                 color: '#292929',
                 opacity: '50%',
             },
-
+            '& .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
+              borderColor: "#FF4D00",
+            }
         }}
         />
         </Box>
+        { !isValid ? (
+          <Typography sx={{
+            fontFamily: 'var(--font-roboto-mono)',
+            fontWeight: 400,
+            fontSize: '12px',
+            lineHeight: '21px',
+            paddingTop: '19px',
+            paddingLeft: '20px',
+            color: '#FF4D00',
+            textAlign: 'center'
+          }}>
+          Invalid Number
+        </Typography>
+        ): null}
         <Button variant="contained"
         sx={{
             width: 345,

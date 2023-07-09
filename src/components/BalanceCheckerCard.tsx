@@ -1,37 +1,53 @@
 import React, { useState } from "react";
-import { Box, Paper, TextField, Typography } from '@mui/material';
-import Image from 'next/image'
-import DwellingIconFilled from '../../public/DwellingIcon-Filled.jpg'
+import { Box, Paper, TextField, Typography, Button, Avatar } from '@mui/material';
+import CreditCardList from "./CreditCardList";
+import { handleNumberDisplay, sortByBalanceDesc } from '@/utils/balanceCheckerUtils'
+
+interface CreditCard {
+  cardValue: string;
+  balance: number;
+  endingValue: string;
+}
 
 const BalanceCheckerCard = () => {
-  const [cardValue, setCardValue] = useState('')
-  const handleCardValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  handleNumberDisplay(event.target.value)
-  }
-
-  const handleNumberDisplay = (input: any) => {
-    const re = /[a-zA-Z&@*~$()[;\)\:\]\?{\}\-_+=`\^\|\\\\/\"',.!#%<>](.*)/g;
-    if (re.test(input)) {
-      input = input.replace(re, ''); // removes all the letters and special characters
+    let initialState: CreditCard = {
+      cardValue: '',
+      balance: 0,
+      endingValue: ''
     }
-    let numbersWithoutSpaces = [...input.split(' ').join('')] // Remove old space
+    const [cardValue, setCardValue] = useState('')
+    const [creditCardList, setCreditCardList] = React.useState([initialState])
 
-    if (numbersWithoutSpaces.length > 16) {
-      //If entered value has a length greater than 16 then take only the first 16 digits
-      numbersWithoutSpaces = numbersWithoutSpaces.slice(0, 16);
+    const handleCardValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      let finalCreditCard = handleNumberDisplay(event.target.value)
+      setCardValue(finalCreditCard);
     }
-        const creditCard: any = [] // Create card as array
-        numbersWithoutSpaces.forEach((val, index) => {
-            if (index % 4 === 0 && index !== 0) creditCard.push(' ') // Add space
-            creditCard.push(val)
-        })
-        const finalCreditCard = creditCard.join('') // Transform card array to string
-        setCardValue(finalCreditCard);
-  }
 
+    const checkCreditCardValidity = () => {
+      let cardValueWithoutSpaces = cardValue.replaceAll(' ', '');
+      if (cardValueWithoutSpaces.length === 16) {
+        console.log('card is valid!')
+        let endingValue = cardValueWithoutSpaces.substring(12, 16)
+        let fakeBalance = parseInt(cardValueWithoutSpaces.substring(14, 16))
+        let creditCard = {
+          cardValue: cardValue,
+          balance: fakeBalance,
+          endingValue: endingValue
+        }
+        console.log(creditCard)
+        addCreditCardToList(creditCard)
+      }
+    }
 
+    const addCreditCardToList = (card: CreditCard) => {
+      const newList = creditCardList.concat(card);
+      let sortedList = sortByBalanceDesc(newList)
+      setCreditCardList(sortedList);
+      console.log(sortedList)
+    }
 
     return (
+      <>
         <Box
           sx={{
             borderRadius: "10px",
@@ -75,10 +91,7 @@ const BalanceCheckerCard = () => {
             paddingRight: '20px'
           }}
         >
-      <Image
-        src={DwellingIconFilled}
-        alt={`Dwelling Icon Filled`}
-       />
+       <Avatar variant="square" sx={{ width: '25.23px', height: '23.51px' }} alt="Dwelling Icon Filled" src="DwellingIcon-Filled.jpg" />
        </Box>
        </Box>
       <Typography sx={{
@@ -131,6 +144,28 @@ const BalanceCheckerCard = () => {
         }}
         />
         </Box>
+        <Button variant="contained"
+        sx={{
+            width: 345,
+            height: 50,
+            borderRadius: '10px',
+            marginTop: '20px',
+            marginBottom: '20px',
+            backgroundColor: '#000000',
+            ":hover": {
+                backgroundColor: '#C2B5AA',
+                color: '#141414'
+            }
+        }}
+        onClick={() => checkCreditCardValidity()}
+        >Check</Button>
+        {creditCardList.map((card, index) => (
+          card.cardValue && card.cardValue !== '' ? (
+            <CreditCardList key={`creditcard--${index}`} creditCard={card}/>
+          ): null
+        ))}
+        
+        </>
       );
 }
 

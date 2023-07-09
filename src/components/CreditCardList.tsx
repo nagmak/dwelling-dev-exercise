@@ -8,11 +8,16 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 const CreditCardList = (props: any) => {
-    let { creditCard } = props;
+    let { creditCard, onClickTrash } = props;
     console.log(creditCard)
     return (
         <List sx={{ width: 345 }}>
-          <ListItem alignItems="flex-start">
+          <ListItem 
+          alignItems="flex-start"
+          sx={{
+            paddingLeft: 0
+          }}
+          >
             <ListItemText
               primary={
                 <React.Fragment>
@@ -43,12 +48,12 @@ const CreditCardList = (props: any) => {
                         paddingRight: '8px'
                      }}
                   >
-                    Balance: {creditCard?.balance >= 0 ? creditCard?.balance: null}
+                    Balance: ${creditCard?.balance >= 0 ? creditCard?.balance: null}
                   </Typography>
                 </React.Fragment>
               }
             />
-            <ListItemAvatar sx={{ marginTop: '3px', minWidth: 'unset' }}>
+            <ListItemAvatar onClick={() => onClickTrash(creditCard)} sx={{ marginTop: '3px', minWidth: 'unset', cursor: 'pointer' }}>
               <Avatar alt="delete" src="icons8-trash-1.jpg" sx={{ width: '24px', height: '24px' }} />
             </ListItemAvatar>
           </ListItem>

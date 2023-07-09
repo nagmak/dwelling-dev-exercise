@@ -25,3 +25,13 @@ export const handleNumberDisplay = (input: any) => {
   export const sortByBalanceDesc = (list: any) => {
     return list.sort((a: any, b: any) => (b.balance - a.balance))
   };
+
+  export const getBalance = async(cardValueWithoutSpaces: any) => {
+    const res = await fetch(`/api/balance_checker?cardValueWithoutSpaces=${cardValueWithoutSpaces}`).then((res) => {
+      if (res.ok) return res.json()
+      throw new Error('Balance was not fetched!')
+    }).catch((error) => {
+      console.log(error)
+    });
+    return res;
+  }

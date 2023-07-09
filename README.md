@@ -2,7 +2,7 @@
 
 This is a small credit card balance checker project with a fake backend REST API, built in Next.js with TypeScript.
 
-![Balance Checker App](balance-checker-app.png "Balance Checker App")
+![Balance Checker App](/public/balance-checker-app.png "Balance Checker App")
 
 ## What I would do if I had more time
 

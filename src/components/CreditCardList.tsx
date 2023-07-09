@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 const CreditCardList = (props: any) => {
     let { creditCard, onClickTrash } = props;
-    console.log(creditCard)
+
     return (
         <List sx={{ width: 345 }}>
           <ListItem 

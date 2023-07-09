@@ -16,7 +16,7 @@ const BalanceCheckerCard = () => {
       endingValue: ''
     }
     const [cardValue, setCardValue] = useState('');
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState(true);
     const [creditCardList, setCreditCardList] = React.useState([initialState]);
 
     const handleCardValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const BalanceCheckerCard = () => {
       let cardValueWithoutSpaces = cardValue.replaceAll(' ', '');
       if (cardValueWithoutSpaces.length === 16) {
         const endingValue = cardValueWithoutSpaces.substring(12, 16)
-        const calculatedBalance = await getBalance(cardValueWithoutSpaces);
+        const calculatedBalance = await getBalance(cardValueWithoutSpaces); // Fetches computed balance
         let creditCard = {
           cardValue: cardValue,
           balance: calculatedBalance,

@@ -10,6 +10,7 @@ This is a small credit card balance checker project with a fake backend REST API
 - Spend more time on the CSS to make it look more seamless, including using a custom theme
 - Instead of using 'any' in some places, replace it with the correct Type (since this is using TypeScript)
 - Load the dwelling icon as a SVG instead for a less pixelated look
+- Test on mobile and fix mobile browser bugs
 - As a simple budgeting app, adding a total balance would be useful, so they know how much they owe
 - Add a full transaction that includes - name of transaction, date/timestamp, amount they owe, card type, card bank, and card number
 - Allow users to view their transactions organized by month in the list

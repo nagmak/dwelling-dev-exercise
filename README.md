@@ -7,14 +7,17 @@ This is a small credit card balance checker project with a fake backend REST API
 ## What I would do if I had more time
 
 - Add more unit testing and improve the code coverage
+- Spend more time on the CSS to make it look more seamless, including using a custom theme
+- Instead of using 'any' in some places, replace it with the correct Type (since this is using TypeScript)
+- Load the dwelling icon as a SVG instead for a less pixelated look
 - As a simple budgeting app, adding a total balance would be useful, so they know how much they owe
 - Add a full transaction that includes - name of transaction, date/timestamp, amount they owe, card type, card bank, and card number
 - Allow users to view their transactions organized by month in the list
 - Let users toggle the sort to be ascending or descending by balance
 - Add a favourite or pin feature so they can pin important transactions
 - Add a search feature so users can find the transaction they are looking for
-- Add authentication so users feel safe logging in and using the app to view their transactions
-- Add a backend database to save user transactions so the page is populated with a user's information instead of them putting in this value multiple times
+- Add authentication so users feel safe logging in and using the app to view their transactions (OAuth, Auth0, etc)
+- Add a backend database to save user transactions so the page is populated with a user's information instead of them putting in this value multiple times (AWS DynamoDB, MongoDB, etc)
 - If this were to be a much larger scale budgeting app, I would use the Plaid API to get user transactions instead of a single balance from a Credit Card number they input
 
 ## Getting Started
